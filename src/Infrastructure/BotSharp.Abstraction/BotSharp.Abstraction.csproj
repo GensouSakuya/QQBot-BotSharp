@@ -6,7 +6,7 @@
 	  <LangVersion>$(LangVersion)</LangVersion>
     <VersionPrefix>$(BotSharpVersion)</VersionPrefix>
     <PackageIcon>Icon.png</PackageIcon>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>$(GeneratePackageOnBuild)</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@
     <TargetFramework>$(TargetFramework)</TargetFramework>
     <LangVersion>$(LangVersion)</LangVersion>
     <VersionPrefix>$(BotSharpVersion)</VersionPrefix>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>$(GeneratePackageOnBuild)</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup>

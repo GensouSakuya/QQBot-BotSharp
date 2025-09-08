@@ -7,7 +7,6 @@
     <VersionPrefix>$(BotSharpVersion)</VersionPrefix>
     <GeneratePackageOnBuild>$(GeneratePackageOnBuild)</GeneratePackageOnBuild>
     <GenerateDocumentationFile>$(GenerateDocumentationFile)</GenerateDocumentationFile>
-    <OutputPath>$(SolutionDir)packages</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
