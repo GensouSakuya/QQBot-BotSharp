@@ -1,5 +1,3 @@
-using BotSharp.Abstraction.Users.Enums;
-
 namespace BotSharp.Abstraction.Repositories.Filters;
 
 public class RoleFilter
@@ -8,7 +6,7 @@ public class RoleFilter
     public IEnumerable<string>? Names { get; set; }
 
     [JsonPropertyName("exclude_roles")]
-    public IEnumerable<string>? ExcludeRoles { get; set; } = UserConstant.AdminRoles;
+    public IEnumerable<string>? ExcludeRoles { get; set; }
 
 
     public static RoleFilter Empty()

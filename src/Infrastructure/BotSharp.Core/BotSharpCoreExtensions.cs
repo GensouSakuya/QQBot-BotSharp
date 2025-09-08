@@ -5,7 +5,6 @@ using BotSharp.Core.Plugins;
 using BotSharp.Abstraction.Settings;
 using BotSharp.Abstraction.Options;
 using BotSharp.Abstraction.Messaging.JsonConverters;
-using BotSharp.Abstraction.Users.Settings;
 using BotSharp.Abstraction.Interpreters.Settings;
 using BotSharp.Abstraction.Infrastructures;
 using BotSharp.Core.Processors;
@@ -17,6 +16,7 @@ using BotSharp.Core.Templating;
 using BotSharp.Abstraction.Infrastructures.Enums;
 using BotSharp.Abstraction.Realtime;
 using BotSharp.Abstraction.Repositories.Settings;
+using Microsoft.Extensions.Hosting;
 
 namespace BotSharp.Core;
 
@@ -34,7 +34,6 @@ public static class BotSharpCoreExtensions
 
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<IRoleService, RoleService>();
-        services.AddScoped<IUserService, UserService>();
         services.AddScoped<ProcessorFactory>();
 
         AddRedisEvents(services, config);
@@ -131,10 +130,6 @@ public static class BotSharpCoreExtensions
             var settingService = provider.GetRequiredService<ISettingService>();
             return settingService.Bind<PluginSettings>("PluginLoader");
         });
-
-        var accountSettings = new AccountSetting();
-        config.Bind("Account", accountSettings);
-        services.AddScoped(x => accountSettings);
 
         var loader = new PluginLoader(services, config, pluginSettings);
         loader.Load(assembly =>

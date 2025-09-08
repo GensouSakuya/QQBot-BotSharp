@@ -1,5 +1,4 @@
 using BotSharp.Abstraction.Loggers.Models;
-using BotSharp.Abstraction.Users.Models;
 
 namespace BotSharp.Core.Loggers.Services;
 
@@ -12,14 +11,6 @@ public partial class LoggerService
             filter = InstructLogFilter.Empty();
         }
 
-        var userService = _services.GetRequiredService<IUserService>();
-        var (isAdmin, user) = await userService.IsAdminUser(_user.Id);
-        if (!isAdmin && user?.Id == null) return new();
-
-        filter.UserIds = !isAdmin && user?.Id != null ? [user.Id] : null;
-
-        var users = new List<User>();
-
         var db = _services.GetRequiredService<IBotSharpRepository>();
         var agentService = _services.GetRequiredService<IAgentService>();
         var logs = await db.GetInstructionLogs(filter);
@@ -27,24 +18,10 @@ public partial class LoggerService
         var userIds = logs.Items.Where(x => !string.IsNullOrEmpty(x.UserId)).Select(x => x.UserId).ToList();
         var agents = await agentService.GetAgentOptions(agentIds);
 
-        if (isAdmin)
-        {
-            users = await userService.GetUsers(userIds);
-        }
-
         var items = logs.Items.Select(x =>
         {
             x.AgentName = !string.IsNullOrEmpty(x.AgentId) ? agents.FirstOrDefault(a => a.Id == x.AgentId)?.Name : null;
 
-            if (!isAdmin)
-            {
-                x.UserName = user != null ? $"{user.FirstName} {user.LastName}" : null;
-            }
-            else
-            {
-                var found = !string.IsNullOrEmpty(x.UserId) ? users.FirstOrDefault(u => u.Id == x.UserId) : null;
-                x.UserName = found != null ? $"{found.FirstName} {found.LastName}" : null;
-            }
             return x;
         }).ToList();
 
@@ -68,11 +45,8 @@ public partial class LoggerService
             return keys;
         }
 
-        var userService = _services.GetRequiredService<IUserService>();
         var db = _services.GetRequiredService<IBotSharpRepository>();
 
-        var (isAdmin, user) = await userService.IsAdminUser(_user.Id);
-        filter.UserIds = !isAdmin && user?.Id != null ? [user.Id] : null;
         keys = db.GetInstructionLogSearchKeys(filter);
         keys = filter.PreLoad ? keys : keys.Where(x => x.Contains(filter.Query ?? string.Empty, StringComparison.OrdinalIgnoreCase)).ToList();
         return keys.OrderBy(x => x).Take(filter.KeyLimit).ToList();

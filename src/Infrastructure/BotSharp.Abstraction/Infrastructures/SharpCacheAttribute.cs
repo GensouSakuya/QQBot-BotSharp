@@ -52,7 +52,7 @@ public class SharpCacheAttribute : AsyncMoAttribute
             return;
         }
 
-        var httpContext = Services.GetRequiredService<IHttpContextAccessor>();
+        var httpContext = Services.GetService<IHttpContextAccessor>();
         if (httpContext != null &&
             httpContext.HttpContext != null &&
             httpContext.HttpContext.Response.Headers["Cache-Control"].ToString().Contains("no-store"))

@@ -46,12 +46,4 @@ public partial class AgentService : IAgentService
         }
         return dir;
     }
-
-    public async Task<List<UserAgent>> GetUserAgents(string userId)
-    {
-        if (string.IsNullOrEmpty(userId)) return [];
-
-        var userAgents = _db.GetUserAgents(userId);
-        return userAgents;
-    }
 }

@@ -1,5 +1,4 @@
 using BotSharp.Abstraction.Conversations.Enums;
-using BotSharp.Abstraction.Users.Dtos;
 
 namespace BotSharp.Abstraction.Conversations.Dtos;
 
@@ -18,8 +17,6 @@ public class ConversationDto
 
     [JsonPropertyName("title_alias")]
     public string TitleAlias { get; set; } = string.Empty;
-
-    public UserDto User { get; set; } = new UserDto();
 
     public string Channel { get; set; } = ConversationChannel.OpenAPI;
 
@@ -45,10 +42,6 @@ public class ConversationDto
         return new ConversationDto
         {
             Id = sess.Id,
-            User = new UserDto
-            {
-                Id = sess.UserId
-            },
             AgentId = sess.AgentId,
             Title = sess.Title,
             TitleAlias = sess.TitleAlias,

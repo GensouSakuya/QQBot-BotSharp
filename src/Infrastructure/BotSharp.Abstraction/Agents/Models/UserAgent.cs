@@ -1,5 +1,3 @@
-using BotSharp.Abstraction.Users.Models;
-
 namespace BotSharp.Abstraction.Agents.Models;
 
 public class UserAgent

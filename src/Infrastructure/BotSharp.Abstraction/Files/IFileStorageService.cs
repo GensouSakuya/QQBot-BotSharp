@@ -51,12 +51,6 @@ public interface IFileStorageService
     bool DeleteConversationFiles(IEnumerable<string> conversationIds);
     #endregion
 
-
-    #region User
-    string GetUserAvatar();
-    bool SaveUserAvatar(FileDataModel file);
-    #endregion
-
     #region Speech
     bool SaveSpeechFile(string conversationId, string fileName, BinaryData data);
     BinaryData GetSpeechFile(string conversationId, string fileName);

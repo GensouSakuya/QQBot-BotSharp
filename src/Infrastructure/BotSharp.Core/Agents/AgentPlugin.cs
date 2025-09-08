@@ -3,7 +3,6 @@ using BotSharp.Abstraction.Plugins.Models;
 using BotSharp.Abstraction.Settings;
 using BotSharp.Abstraction.Statistics.Settings;
 using BotSharp.Abstraction.Templating;
-using BotSharp.Abstraction.Users.Enums;
 using BotSharp.Core.Agents.Hooks;
 using Microsoft.Extensions.Configuration;
 
@@ -58,7 +57,6 @@ public class AgentPlugin : IBotSharpPlugin
             SubMenu = new List<PluginMenuDef>
             {
                 new PluginMenuDef("Routing", link: "page/agent/router"), // icon: "bx bx-map-pin"
-                new PluginMenuDef("Evaluating", link: "page/agent/evaluator") { Roles = new List<string> { UserRole.Root, UserRole.Admin } }, // icon: "bx bx-task"
                 new PluginMenuDef("Agents", link: "page/agent"), // icon: "bx bx-bot"
             }
         });

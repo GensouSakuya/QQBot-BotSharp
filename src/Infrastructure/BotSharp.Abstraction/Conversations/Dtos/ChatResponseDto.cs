@@ -2,7 +2,6 @@ using BotSharp.Abstraction.Functions.Models;
 using BotSharp.Abstraction.Instructs.Models;
 using BotSharp.Abstraction.Messaging;
 using BotSharp.Abstraction.Messaging.Models.RichContent;
-using BotSharp.Abstraction.Users.Dtos;
 
 namespace BotSharp.Abstraction.Conversations.Dtos;
 
@@ -10,8 +9,6 @@ public class ChatResponseDto : InstructResult
 {
     [JsonPropertyName("conversation_id")]
     public string ConversationId { get; set; } = string.Empty;
-
-    public UserDto Sender { get; set; } = new UserDto();
 
     public string? Function { get; set; }
 

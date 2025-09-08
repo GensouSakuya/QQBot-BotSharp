@@ -1,6 +1,5 @@
 using BotSharp.Abstraction.Plugins.Models;
 using BotSharp.Abstraction.Tasks;
-using BotSharp.Abstraction.Users.Enums;
 using BotSharp.Core.Tasks.Services;
 using Microsoft.Extensions.Configuration;
 
@@ -22,7 +21,6 @@ public class TaskPlugin : IBotSharpPlugin
         var section = menu.First(x => x.Label == "Apps");
         menu.Add(new PluginMenuDef("Task", link: "page/task", icon: "bx bx-task", weight: section.Weight + 8)
         {
-            Roles = new List<string> { UserRole.Root, UserRole.Admin }
         });
 
         return true;

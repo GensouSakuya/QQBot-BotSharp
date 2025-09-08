@@ -7,7 +7,6 @@ public partial class LocalFileStorageService : IFileStorageService
 {
     private readonly BotSharpDatabaseSettings _dbSettings;
     private readonly IServiceProvider _services;
-    private readonly IUserIdentity _user;
     private readonly ILogger<LocalFileStorageService> _logger;
     private readonly string _baseDir;
 
@@ -33,12 +32,10 @@ public partial class LocalFileStorageService : IFileStorageService
 
     public LocalFileStorageService(
         BotSharpDatabaseSettings dbSettings,
-        IUserIdentity user,
         ILogger<LocalFileStorageService> logger,
         IServiceProvider services)
     {
         _dbSettings = dbSettings;
-        _user = user;
         _logger = logger;
         _services = services;
         _baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, dbSettings.FileRepository);

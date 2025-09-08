@@ -9,7 +9,6 @@ namespace BotSharp.Abstraction.Agents;
 /// </summary>
 public interface IAgentService
 {
-    Task<Agent> CreateAgent(Agent agent);
     Task<string> RefreshAgents(IEnumerable<string>? agentIds = null);
     Task<PagedItems<Agent>> GetAgents(AgentFilter filter);
     Task<List<IdName>> GetAgentOptions(List<string>? agentIds = null, bool byName = false);
@@ -64,7 +63,6 @@ public interface IAgentService
     string GetDataDir();
     string GetAgentDataDir(string agentId);
 
-    Task<List<UserAgent>> GetUserAgents(string userId);
 
     PluginDef GetPlugin(string agentId);
 }

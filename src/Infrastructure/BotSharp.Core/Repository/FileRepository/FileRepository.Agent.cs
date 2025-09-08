@@ -522,27 +522,6 @@ namespace BotSharp.Core.Repository
             return query.ToList();
         }
 
-        public List<UserAgent> GetUserAgents(string userId)
-        {
-            var found = (from ua in UserAgents
-                         join u in Users on ua.UserId equals u.Id
-                         where ua.UserId == userId || u.ExternalId == userId
-                         select ua).ToList();
-
-            if (found.IsNullOrEmpty()) return [];
-
-            var agentIds = found.Select(x => x.AgentId).Distinct().ToList();
-            var agents = GetAgents(new AgentFilter { AgentIds = agentIds });
-            foreach (var item in found)
-            {
-                var agent = agents.FirstOrDefault(x => x.Id == item.AgentId);
-                if (agent == null) continue;
-
-                item.Agent = agent;
-            }
-
-            return found;
-        }
 
 
         public string GetAgentTemplate(string agentId, string templateName)

@@ -35,7 +35,6 @@ public class TemplateRender : ITemplateRender
         _options.MemberAccessStrategy.Register<RoutingHandlerDef>();
         _options.MemberAccessStrategy.Register<FunctionDef>();
         _options.MemberAccessStrategy.Register<FunctionParametersDef>();
-        _options.MemberAccessStrategy.Register<UserIdentity>();
         _options.MemberAccessStrategy.Register<TranslationInput>();
 
         _options.Filters.AddFilter("from_agent", FromAgentFilter);

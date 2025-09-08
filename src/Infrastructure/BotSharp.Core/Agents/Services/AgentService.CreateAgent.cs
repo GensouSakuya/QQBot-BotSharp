@@ -1,6 +1,5 @@
 using BotSharp.Abstraction.Repositories.Settings;
 using BotSharp.Abstraction.Tasks.Models;
-using BotSharp.Abstraction.Users.Enums;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -8,48 +7,6 @@ namespace BotSharp.Core.Agents.Services;
 
 public partial class AgentService
 {
-    public async Task<Agent> CreateAgent(Agent agent)
-    {
-        var userIdentity = _services.GetRequiredService<IUserIdentity>();
-        var userAgents = _db.GetUserAgents(userIdentity.Id);
-        var found = userAgents?.FirstOrDefault(x => x.Agent != null && x.Agent.Name.IsEqualTo(agent.Name));
-        if (found != null)
-        {
-            return found.Agent;
-        }
-
-        var agentRecord = Agent.Clone(agent);
-        agentRecord.Id = Guid.NewGuid().ToString();
-        agentRecord.CreatedDateTime = DateTime.UtcNow;
-        agentRecord.UpdatedDateTime = DateTime.UtcNow;
-
-        var dbSettings = _services.GetRequiredService<BotSharpDatabaseSettings>();
-        var agentSettings = _services.GetRequiredService<AgentSettings>();
-
-        var user = _db.GetUserById(userIdentity.Id);
-        var userService = _services.GetRequiredService<IUserService>();
-        var auth = await userService.GetUserAuthorizations();
-
-        _db.BulkInsertAgents(new List<Agent> { agentRecord });
-        if (auth.IsAdmin || auth.Permissions.Contains(UserPermission.CreateAgent))
-        {
-            _db.BulkInsertUserAgents(new List<UserAgent>
-            {
-                new UserAgent
-                {
-                    UserId = user.Id,
-                    AgentId = agentRecord.Id,
-                    Actions = new List<string> { UserAction.Edit, UserAction.Train, UserAction.Evaluate, UserAction.Chat },
-                    CreatedTime = DateTime.UtcNow,
-                    UpdatedTime = DateTime.UtcNow
-                }
-            });
-        }
-
-        Utilities.ClearCache();
-        return await Task.FromResult(agentRecord);
-    }
-
     private (string, List<ChannelInstruction>) GetInstructionsFromFile(string fileDir)
     {
         var defaultInstruction = string.Empty;

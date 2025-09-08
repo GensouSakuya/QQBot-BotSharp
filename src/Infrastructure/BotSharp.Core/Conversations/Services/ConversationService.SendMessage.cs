@@ -20,10 +20,6 @@ public partial class ConversationService
         _logger.LogInformation(content);
 
         message.CurrentAgentId = agent.Id;
-        if (string.IsNullOrEmpty(message.SenderId))
-        {
-            message.SenderId = _user.Id;
-        }
 
         var conv = _services.GetRequiredService<IConversationService>();
         var dialogs = conv.GetDialogHistory();

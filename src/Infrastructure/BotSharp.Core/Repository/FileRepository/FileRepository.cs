@@ -2,7 +2,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Text.Encodings.Web;
 using FunctionDef = BotSharp.Abstraction.Functions.Models.FunctionDef;
-using BotSharp.Abstraction.Users.Models;
 using BotSharp.Abstraction.Plugins.Models;
 using BotSharp.Abstraction.Tasks.Models;
 using BotSharp.Abstraction.Repositories.Settings;
@@ -83,8 +82,6 @@ public partial class FileRepository : IBotSharpRepository
     }
 
     private List<Role> _roles = new List<Role>();
-    private List<User> _users = new List<User>();
-    private List<Dashboard> _dashboards = [];
     private List<Agent> _agents = new List<Agent>();
     private List<RoleAgent> _roleAgents = new List<RoleAgent>();
     private List<UserAgent> _userAgents = new List<UserAgent>();
@@ -141,63 +138,6 @@ public partial class FileRepository : IBotSharpRepository
                 }
             }
             return _roleAgents.AsQueryable();
-        }
-    }
-
-    private IQueryable<User> Users
-    {
-        get
-        {
-            if (!_users.IsNullOrEmpty())
-            {
-                return _users.AsQueryable();
-            }
-
-            var dir = Path.Combine(_dbSettings.FileRepository, USERS_FOLDER);
-            _users = new List<User>();
-            if (Directory.Exists(dir))
-            {
-                foreach (var d in Directory.GetDirectories(dir))
-                {
-                    var userFile = Path.Combine(d, USER_FILE);
-                    if (!Directory.Exists(d) || !File.Exists(userFile))
-                        continue;
-
-                    var json = File.ReadAllText(userFile);
-                    _users.Add(JsonSerializer.Deserialize<User>(json, _options));
-                }
-            }
-            return _users.AsQueryable();
-        }
-    }
-
-    private IQueryable<Dashboard> Dashboards
-    {
-        get
-        {
-            if (!_dashboards.IsNullOrEmpty())
-            {
-                return _dashboards.AsQueryable();
-            }
-
-            var dir = Path.Combine(_dbSettings.FileRepository, USERS_FOLDER);
-            _dashboards = [];
-            if (Directory.Exists(dir))
-            {
-                foreach (var d in Directory.GetDirectories(dir))
-                {
-                    var dashboardFile = Path.Combine(d, DASHBOARD_FILE);
-                    if (!Directory.Exists(d) || !File.Exists(dashboardFile))
-                        continue;
-
-                    var json = File.ReadAllText(dashboardFile);
-                    var dash = JsonSerializer.Deserialize<Dashboard>(json, _options);
-
-                    if (dash == null) continue;
-                    _dashboards.Add(dash);
-                }
-            }
-            return _dashboards.AsQueryable();
         }
     }
 

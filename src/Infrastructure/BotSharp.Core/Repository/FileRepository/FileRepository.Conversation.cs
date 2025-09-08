@@ -1,5 +1,4 @@
 using BotSharp.Abstraction.Loggers.Models;
-using BotSharp.Abstraction.Users.Models;
 using System;
 using System.IO;
 
@@ -708,7 +707,6 @@ public partial class FileRepository
             if (conv == null
                 || states.IsNullOrEmpty()
                 || (!filter.AgentIds.IsNullOrEmpty() && !filter.AgentIds.Contains(conv.AgentId))
-                || (!filter.UserIds.IsNullOrEmpty() && !filter.UserIds.Contains(conv.UserId))
                 || (filter.StartTime.HasValue && conv.CreatedTime < filter.StartTime.Value)
                 || (filter.EndTime.HasValue && conv.CreatedTime > filter.EndTime.Value))
             {

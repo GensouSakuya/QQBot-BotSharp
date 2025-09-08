@@ -8,7 +8,6 @@ public partial class ConversationService : IConversationService
 {
     private readonly ILogger _logger;
     private readonly IServiceProvider _services;
-    private readonly IUserIdentity _user;
     private readonly ConversationSetting _settings;
     private readonly IConversationStorage _storage;
     private readonly IConversationStateService _state;
@@ -21,14 +20,12 @@ public partial class ConversationService : IConversationService
 
     public ConversationService(
         IServiceProvider services,
-        IUserIdentity user,
         ConversationSetting settings,
         IConversationStorage storage,
         IConversationStateService state,
         ILogger<ConversationService> logger)
     {
         _services = services;
-        _user = user;
         _settings = settings;
         _storage = storage;
         _state = state;
@@ -106,8 +103,7 @@ public partial class ConversationService : IConversationService
     public async Task<Conversation> NewConversation(Conversation sess)
     {
         var db = _services.GetRequiredService<IBotSharpRepository>();
-        var user = db.GetUserById(_user.Id);
-        var foundUserId = user?.Id ?? string.Empty;
+        var foundUserId = string.Empty;
 
         var record = sess;
         record.Id = sess.Id.IfNullOrEmptyAs(Guid.NewGuid().ToString());
@@ -241,11 +237,8 @@ public partial class ConversationService : IConversationService
             return keys;
         }
 
-        var userService = _services.GetRequiredService<IUserService>();
         var db = _services.GetRequiredService<IBotSharpRepository>();
 
-        var (isAdmin, user) = await userService.IsAdminUser(_user.Id);
-        filter.UserIds = !isAdmin && user?.Id != null ? [user.Id] : [];
         keys = db.GetConversationStateSearchKeys(filter);
         keys = filter.PreLoad ? keys : keys.Where(x => x.Contains(filter.Query ?? string.Empty, StringComparison.OrdinalIgnoreCase)).ToList();
         return keys.OrderBy(x => x).Take(filter.KeyLimit).ToList();
