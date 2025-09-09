@@ -47,7 +47,7 @@ public class ObserverSubscriptionContainer<T> : IDisposable
         if (!_disposed)
         {
 #if DEBUG
-            _logger.LogCritical($"Start disposing subscriptions...");
+            _logger.LogDebug($"Start disposing subscriptions...");
 #endif
             // UnSubscribe all observers
             foreach (var sub in _subscriptions)
@@ -56,7 +56,7 @@ public class ObserverSubscriptionContainer<T> : IDisposable
             }
             _subscriptions.Clear();
 #if DEBUG
-            _logger.LogCritical($"End disposing subscriptions...");
+            _logger.LogDebug($"End disposing subscriptions...");
 #endif
             _disposed = true;
         }
