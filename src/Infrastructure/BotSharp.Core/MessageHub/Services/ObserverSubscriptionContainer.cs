@@ -17,7 +17,7 @@ public class ObserverSubscriptionContainer<T> : IDisposable
     {
         if (!names.IsNullOrEmpty())
         {
-            return _subscriptions.Where(x => names.Contains(x.Observer.Name)).ToList();
+            return _subscriptions.Where(x => names!.Contains(x.Observer.Name)).ToList();
         }
         return _subscriptions;
     }
@@ -31,7 +31,7 @@ public class ObserverSubscriptionContainer<T> : IDisposable
     {
         if (!names.IsNullOrEmpty())
         {
-            _subscriptions = _subscriptions.Where(x => !names.Contains(x.Observer.Name)).ToList();
+            _subscriptions = _subscriptions.Where(x => !names!.Contains(x.Observer.Name)).ToList();
             return;
         }
         _subscriptions.Clear();
